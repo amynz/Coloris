@@ -207,13 +207,17 @@
   height: 20px;
   margin: 0 4px 6px 4px;
   padding: 0;
-  border: 0;
+  border: 1px solid white;
   border-radius: 50%;
   color: inherit;
   text-indent: -1000px;
   white-space: nowrap;
   overflow: hidden;
   cursor: pointer;
+}
+
+.clr-swatches button.clr-swatch-selected {
+  border-color: black;
 }
 
 .clr-swatches button:after {
@@ -418,6 +422,14 @@ input.clr-color:focus {
 
 .clr-dark .clr-segmented {
   border-color: #777;
+}
+
+.clr-dark .clr-swatches button {
+  border-color: #444;
+}
+
+.clr-dark .clr-swatches button.clr-swatch-selected {
+  border-color: white;
 }
 
 .clr-dark .clr-swatches button:after {

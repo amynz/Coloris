@@ -21,7 +21,7 @@
     wrap: true,
     margin: 2,
     format: 'hex',
-    formatToggle : false,
+    formatToggle: false,
     swatches: [],
     swatchesOnly: false,
     alpha: true,
@@ -166,7 +166,7 @@
 
           if (settings.inline) {
             const defaultColor = options.defaultColor || settings.defaultColor;
-            
+
             currentFormat = getColorFormatFromStr(defaultColor);
             updatePickerPosition();
             setColorFromStr(defaultColor);
@@ -316,14 +316,14 @@
   function bindFields(selector) {
     if (selector instanceof HTMLElement) {
       selector = [selector];
-    } 
+    }
 
     if (Array.isArray(selector)) {
       selector.forEach(field => {
         addListener(field, 'click', openPicker);
         addListener(field, 'input', updateColorPreview);
       });
-    } else  {   
+    } else  {
       addListener(document, 'click', selector, openPicker);
       addListener(document, 'input', selector, updateColorPreview);
     }
@@ -346,15 +346,16 @@
     oldColor = currentEl.value;
     currentFormat = getColorFormatFromStr(oldColor);
     picker.classList.add('clr-open');
-    
+
     updatePickerPosition();
     setColorFromStr(oldColor);
+    selectSwatch(oldColor);
 
     if (settings.focusInput || settings.selectInput) {
       colorValue.focus({ preventScroll: true });
       colorValue.setSelectionRange(currentEl.selectionStart, currentEl.selectionEnd);
     }
-    
+
     if (settings.selectInput) {
       colorValue.select();
     }
@@ -436,7 +437,7 @@
       offset.x += picker.offsetLeft;
       offset.y += picker.offsetTop;
     }
-    
+
     colorAreaDims = {
       width: colorArea.offsetWidth,
       height: colorArea.offsetHeight,
@@ -597,7 +598,26 @@
       settings.onChange.call(window, color, currentEl);
     }
 
+    selectSwatch(color);
+
     document.dispatchEvent(new CustomEvent('coloris:pick', { detail: { color, currentEl } }));
+  }
+
+  /**
+   * If the active color matches one of the swatches, highlight the swatch.
+   * @param {number} [color] Color value to highlight.
+   */
+  function selectSwatch(color) {
+    if (settings.swatches) {
+      const swatchIdx = settings.swatches.indexOf(color.toUpperCase());
+      let allSwatches = getEl('clr-swatches').querySelectorAll('button');
+      allSwatches.forEach(function(s, i){
+        s.classList.remove('clr-swatch-selected');
+      });
+      if(swatchIdx !== -1) {
+        allSwatches[swatchIdx].classList.add('clr-swatch-selected');
+      }
+    }
   }
 
   /**
