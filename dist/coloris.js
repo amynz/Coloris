@@ -349,6 +349,7 @@
 
     updatePickerPosition();
     setColorFromStr(oldColor);
+    selectSwatch(oldColor);
 
     if (settings.focusInput || settings.selectInput) {
       colorValue.focus({ preventScroll: true });
@@ -597,7 +598,26 @@
       settings.onChange.call(window, color, currentEl);
     }
 
+    selectSwatch(color);
+
     document.dispatchEvent(new CustomEvent('coloris:pick', { detail: { color: color, currentEl: currentEl } }));
+  }
+
+  /**
+   * If the active color matches one of the swatches, highlight the swatch.
+   * @param {number} [color] Color value to highlight.
+   */
+  function selectSwatch(color) {
+    if (settings.swatches) {
+      var swatchIdx = settings.swatches.indexOf(color.toUpperCase());
+      var allSwatches = getEl('clr-swatches').querySelectorAll('button');
+      allSwatches.forEach(function(s, i){
+        s.classList.remove('clr-swatch-selected');
+      });
+      if(swatchIdx !== -1) {
+        allSwatches[swatchIdx].classList.add('clr-swatch-selected');
+      }
+    }
   }
 
   /**
