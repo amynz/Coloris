@@ -1077,6 +1077,25 @@
       }
     });
 
+    addListener(colorValue, 'keyup', event => {
+      const value = colorValue.value;
+
+      if (value.length == 7 && (currentEl || settings.inline)) {
+        const color = value === '' ? value : setColorFromStr(value);
+        pickColor(color);
+      }
+    });
+
+    colorValue.addEventListener('paste', event => {
+      event.preventDefault();
+      const value = (event.clipboardData || window.clipboardData).getData("text");
+
+      if (value.length == 7 && (currentEl || settings.inline)) {
+        const color = value === '' ? value : setColorFromStr(value);
+        pickColor(color);
+      }
+    });
+
     addListener(clearButton, 'click', event => {
       pickColor('');
       closePicker();

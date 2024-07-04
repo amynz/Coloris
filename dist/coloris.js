@@ -1077,6 +1077,25 @@
       }
     });
 
+    addListener(colorValue, 'keyup', function(event) {
+      var value = colorValue.value;
+
+      if (value.length == 7 && (currentEl || settings.inline)) {
+        var color = value === '' ? value : setColorFromStr(value);
+        pickColor(color);
+      }
+    });
+
+    colorValue.addEventListener('paste', function(event) {
+      event.preventDefault();
+      var value = (event.clipboardData || window.clipboardData).getData("text");
+
+      if (value.length == 7 && (currentEl || settings.inline)) {
+        var color = value === '' ? value : setColorFromStr(value);
+        pickColor(color);
+      }
+    });
+
     addListener(clearButton, 'click', function (event) {
       pickColor('');
       closePicker();
